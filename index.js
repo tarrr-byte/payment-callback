@@ -15,7 +15,7 @@ app.post('/callback_payment', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Urlcallack active!');
+  res.send('Url callback active');
 });
 
 const PORT = process.env.PORT || 3000;
