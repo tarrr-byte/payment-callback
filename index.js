@@ -6,10 +6,20 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/callback', (req, res) => {
-  console.log('=== Payment Callback Diterima ===');
-  console.log(req.body);
+  // Ambil IP asli dari header atau socket
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
-  fs.appendFileSync('payment_log.txt', JSON.stringify(req.body) + '\n');
+  console.log('=== Payment Callback Diterima ===');
+  console.log('IP Pengirim:', ip);
+  console.log('Body:', req.body);
+
+  // Simpan ke file log
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    ip,
+    body: req.body
+  };
+  fs.appendFileSync('payment_log.txt', JSON.stringify(logEntry) + '\n');
 
   res.status(200).json({ status: 'received' });
 });
